@@ -250,6 +250,24 @@ def debug_info():
         "python_path": os.sys.path,
     })
 
+# =============================================================================
+# УЯЗВИМОСТЬ 6: Insecure Direct Object Reference — IDOR (CWE-639) + (CWE-89)
+# =============================================================================
+@app.route("/get_user", methods=["GET"])
+def get_user():
+
+    user_id = request.args.get("id", "")
+    if not user_id.isdigit():
+        return jsonify({"error": "Invalid id"}), 401
+
+    conn = get_db_connection()
+    # Прямая подстановка ID в запрос
+    user = conn.execute(f"SELECT id, username, role FROM users WHERE id = {user_id}").fetchone()
+    conn.close()
+
+    if user:
+        return jsonify(dict(user))
+    return jsonify({"error": "User not found"}), 404
 
 # =============================================================================
 # БЕЗОПАСНЫЕ АНАЛОГИ (для сравнения на занятии)
