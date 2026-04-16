@@ -251,7 +251,7 @@ def debug_info():
     })
 
 # =============================================================================
-# УЯЗВИМОСТЬ 6: Insecure Direct Object Reference — IDOR (CWE-639) + (CWE-89)
+# УЯЗВИМОСТЬ 10: Insecure Direct Object Reference — IDOR (CWE-639) + (CWE-89)
 # =============================================================================
 @app.route("/get_user", methods=["GET"])
 def get_user():
